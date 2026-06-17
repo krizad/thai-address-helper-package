@@ -31,17 +31,17 @@ pnpm add @krizad/thai-location-kit
 ```typescript
 import { 
   searchByZipcode, 
-  searchBySubdistrict,
+  searchBySubDistrict,
   searchAllFields
 } from '@krizad/thai-location-kit';
 
 // ค้นหาที่อยู่ทั้งหมดในรหัสไปรษณีย์ 10400
 const zipcodeResults = searchByZipcode('10400');
 console.log(zipcodeResults);
-// Output: [{ subdistrict: 'พญาไท', district: 'พญาไท', province: 'กรุงเทพมหานคร', zipcode: '10400', ... }, ...]
+// Output: [{ subDistrict: 'พญาไท', district: 'พญาไท', province: 'กรุงเทพมหานคร', zipcode: '10400', ... }, ...]
 
 // ค้นหาจากชื่อตำบล (ค้นหาได้ทั้งภาษาไทยและอังกฤษ)
-const subdistrictResults = searchBySubdistrict('บางซื่อ');
+const subDistrictResults = searchBySubDistrict('บางซื่อ');
 
 // ค้นหาจากคำใดๆ (ค้นหาครอบคลุมทุกฟิลด์ เช่น พิมพ์ "ขอนแก่น" หรือ "40000")
 const mixedResults = searchAllFields('ขอนแก่น');
@@ -55,7 +55,7 @@ const mixedResults = searchAllFields('ขอนแก่น');
 import { 
   getUniqueProvinces, 
   getDistrictsByProvince, 
-  getSubdistrictsByDistrict,
+  getSubDistrictsByDistrict,
   getZipcodeByHierarchy
 } from '@krizad/thai-location-kit';
 
@@ -68,11 +68,11 @@ const districtsInBkk = getDistrictsByProvince('กรุงเทพมหาน
 // ['เขตคลองสาน', 'เขตคลองเตย', 'เขตจตุจักร', ...]
 
 // สเต็ปที่ 3: เมื่อผู้ใช้เลือกอำเภอ ให้ดึงรายชื่อตำบล
-const subdistrictsInChatuchak = getSubdistrictsByDistrict('กรุงเทพมหานคร', 'เขตจตุจักร');
+const subDistrictsInChatuchak = getSubDistrictsByDistrict('กรุงเทพมหานคร', 'เขตจตุจักร');
 /* 
 [
-  { subdistrict: 'จตุจักร', zipcode: '10900', ... }, 
-  { subdistrict: 'จอมพล', zipcode: '10900', ... }
+  { subDistrict: 'จตุจักร', zipcode: '10900', ... }, 
+  { subDistrict: 'จอมพล', zipcode: '10900', ... }
 ] 
 */
 
@@ -86,13 +86,13 @@ const zipcode = getZipcodeByHierarchy('กรุงเทพมหานคร',
 หากต้องการให้ผู้ใช้กรอก รหัสไปรษณีย์ หรือ ตำบล แล้วฟอร์มเติมอำเภอและจังหวัดให้อัตโนมัติ:
 
 ```typescript
-import { cascadeFromZipcode, cascadeFromSubdistrict } from '@krizad/thai-location-kit';
+import { cascadeFromZipcode, cascadeFromSubDistrict } from '@krizad/thai-location-kit';
 
 // เมื่อกรอก 10400 จะได้รายการที่อยู่เพื่อนำไปเติมอัตโนมัติ
 const addresses = cascadeFromZipcode('10400');
 
 // หรือค้นหาจากตำบล
-const addressesFromSub = cascadeFromSubdistrict('ดินแดง');
+const addressesFromSub = cascadeFromSubDistrict('ดินแดง');
 ```
 
 ### 4. การเตรียมข้อมูลสำหรับ UI Dropdown
@@ -120,9 +120,32 @@ console.log(options);
 
 ## 📚 API Reference
 
+### โครงสร้างข้อมูล (Models & Interfaces)
+
+```typescript
+export interface ThaiAddress {
+  subDistrict: string;    // ชื่อตำบล (ภาษาไทย)
+  district: string;       // ชื่ออำเภอ (ภาษาไทย)
+  province: string;       // ชื่อจังหวัด (ภาษาไทย)
+  zipcode: string;        // รหัสไปรษณีย์
+  subDistrictEng: string; // ชื่อตำบล (ภาษาอังกฤษ)
+  districtEng: string;    // ชื่ออำเภอ (ภาษาอังกฤษ)
+  provinceEng: string;    // ชื่อจังหวัด (ภาษาอังกฤษ)
+  subDistrictId: number;  // รหัสตำบล
+  districtId: number;     // รหัสอำเภอ
+  provinceId: number;     // รหัสจังหวัด
+}
+
+export interface DropdownOption {
+  label: string;          // ข้อความสำหรับแสดงใน Dropdown
+  value: string;          // ค่า Value สำหรับอ้างอิง
+  raw: ThaiAddress;       // ข้อมูลที่อยู่ต้นฉบับ
+}
+```
+
 ### หมวดหมู่การค้นหา (Search Functions)
 
-- `searchBySubdistrict(keyword: string): ThaiAddress[]`
+- `searchBySubDistrict(keyword: string): ThaiAddress[]`
 - `searchByDistrict(keyword: string): ThaiAddress[]`
 - `searchByProvince(keyword: string): ThaiAddress[]`
 - `searchByZipcode(keyword: string): ThaiAddress[]`
@@ -132,11 +155,11 @@ console.log(options);
 
 - `getUniqueProvinces(): string[]`
 - `getDistrictsByProvince(province: string): string[]`
-- `getSubdistrictsByDistrict(province: string, district: string): ThaiAddress[]`
-- `getZipcodeByHierarchy(province: string, district: string, subdistrict: string): string | null`
+- `getSubDistrictsByDistrict(province: string, district: string): ThaiAddress[]`
+- `getZipcodeByHierarchy(province: string, district: string, subDistrict: string): string | null`
 - `getUniqueZipcodes(): string[]`
 - `cascadeFromZipcode(zipcode: string): ThaiAddress[]`
-- `cascadeFromSubdistrict(subdistrict: string): ThaiAddress[]`
+- `cascadeFromSubDistrict(subDistrict: string): ThaiAddress[]`
 
 ### หมวดหมู่จัดรูปแบบ UI (UI Formatting)
 

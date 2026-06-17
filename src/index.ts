@@ -3,14 +3,14 @@ import districtsData from '../data/districts.json';
 import subDistrictsData from '../data/sub_districts.json';
 
 export interface ThaiAddress {
-  subdistrict: string;
+  subDistrict: string;
   district: string;
   province: string;
   zipcode: string;
-  subdistrictEng: string;
+  subDistrictEng: string;
   districtEng: string;
   provinceEng: string;
-  subdistrictId: number;
+  subDistrictId: number;
   districtId: number;
   provinceId: number;
 }
@@ -30,14 +30,14 @@ const db: ThaiAddress[] = (subDistrictsData as any[]).map(sub => {
   const prov = provinceMap.get(dist.province_id);
 
   return {
-    subdistrict: sub.sub_district_name_th,
+    subDistrict: sub.sub_district_name_th,
     district: dist.district_name_th,
     province: prov.province_name_th,
     zipcode: String(sub.zipcode),
-    subdistrictEng: sub.sub_district_name_en,
+    subDistrictEng: sub.sub_district_name_en,
     districtEng: dist.district_name_en,
     provinceEng: prov.province_name_en,
-    subdistrictId: sub.sub_district_id,
+    subDistrictId: sub.sub_district_id,
     districtId: dist.district_id,
     provinceId: prov.province_id,
   };
@@ -52,12 +52,12 @@ const clean = (keyword: string) => keyword.trim().toLowerCase();
  * ====================================================
  */
 
-export function searchBySubdistrict(keyword: string): ThaiAddress[] {
+export function searchBySubDistrict(keyword: string): ThaiAddress[] {
   const query = clean(keyword);
   if (!query) return [];
   return db.filter(item => 
-    item.subdistrict.includes(query) || 
-    item.subdistrictEng.toLowerCase().includes(query)
+    item.subDistrict.includes(query) || 
+    item.subDistrictEng.toLowerCase().includes(query)
   );
 }
 
@@ -89,8 +89,8 @@ export function searchAllFields(keyword: string): ThaiAddress[] {
   const query = clean(keyword);
   if (!query) return [];
   return db.filter(item => 
-    item.subdistrict.includes(query) ||
-    item.subdistrictEng.toLowerCase().includes(query) ||
+    item.subDistrict.includes(query) ||
+    item.subDistrictEng.toLowerCase().includes(query) ||
     item.district.includes(query) ||
     item.districtEng.toLowerCase().includes(query) ||
     item.province.includes(query) ||
@@ -120,8 +120,8 @@ export function getDistrictsByProvince(province: string): string[] {
   return [...new Set(districts)].sort((a, b) => a.localeCompare(b, 'th'));
 }
 
-// [Hierarchical] Step 3: Get subdistricts by a specific province and district
-export function getSubdistrictsByDistrict(province: string, district: string): ThaiAddress[] {
+// [Hierarchical] Step 3: Get subDistricts by a specific province and district
+export function getSubDistrictsByDistrict(province: string, district: string): ThaiAddress[] {
   const cleanProv = province.trim();
   const cleanDist = district.trim();
   return db.filter(item => 
@@ -131,11 +131,11 @@ export function getSubdistrictsByDistrict(province: string, district: string): T
 }
 
 // [Hierarchical] Step 4: Autofill zipcode from the 3 selections above
-export function getZipcodeByHierarchy(province: string, district: string, subdistrict: string): string | null {
+export function getZipcodeByHierarchy(province: string, district: string, subDistrict: string): string | null {
   const match = db.find(
     item => (item.province === province.trim() || item.provinceEng.toLowerCase() === province.trim().toLowerCase()) && 
             (item.district === district.trim() || item.districtEng.toLowerCase() === district.trim().toLowerCase()) && 
-            (item.subdistrict === subdistrict.trim() || item.subdistrictEng.toLowerCase() === subdistrict.trim().toLowerCase())
+            (item.subDistrict === subDistrict.trim() || item.subDistrictEng.toLowerCase() === subDistrict.trim().toLowerCase())
   );
   return match ? match.zipcode : null;
 }
@@ -153,11 +153,11 @@ export function cascadeFromZipcode(zipcode: string): ThaiAddress[] {
   return db.filter(item => item.zipcode === query);
 }
 
-// [Reverse Lookup] Search by subdistrict to autofill form
-export function cascadeFromSubdistrict(subdistrict: string): ThaiAddress[] {
-  const query = subdistrict.trim();
+// [Reverse Lookup] Search by subDistrict to autofill form
+export function cascadeFromSubDistrict(subDistrict: string): ThaiAddress[] {
+  const query = subDistrict.trim();
   if (!query) return [];
-  return db.filter(item => item.subdistrict === query || item.subdistrictEng.toLowerCase() === query.toLowerCase());
+  return db.filter(item => item.subDistrict === query || item.subDistrictEng.toLowerCase() === query.toLowerCase());
 }
 
 /**
@@ -168,8 +168,8 @@ export function cascadeFromSubdistrict(subdistrict: string): ThaiAddress[] {
 
 export function formatToDropdownOptions(addresses: ThaiAddress[]): DropdownOption[] {
   return addresses.map((item) => ({
-    label: `ต.${item.subdistrict} อ.${item.district} จ.${item.province} ${item.zipcode}`,
-    value: `${item.subdistrict}|${item.district}|${item.province}|${item.zipcode}`,
+    label: `ต.${item.subDistrict} อ.${item.district} จ.${item.province} ${item.zipcode}`,
+    value: `${item.subDistrict}|${item.district}|${item.province}|${item.zipcode}`,
     raw: item
   }));
 }

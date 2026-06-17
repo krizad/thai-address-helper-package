@@ -1,4 +1,4 @@
-# Thai Address Lookup
+# Thai Location Kit
 
 แพ็กเกจสำหรับค้นหาและจัดการข้อมูลที่อยู่ประเทศไทย (ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์) ที่มีขนาดเล็ก รวดเร็ว และใช้งานง่าย รองรับทั้ง Node.js และ Browser เขียนด้วย TypeScript
 
@@ -15,11 +15,11 @@
 ติดตั้งผ่าน npm หรือ yarn:
 
 ```bash
-npm install thai-address-lookup
+npm install @krizad/thai-location-kit
 # หรือ
-yarn add thai-address-lookup
+yarn add @krizad/thai-location-kit
 # หรือ
-pnpm add thai-address-lookup
+pnpm add @krizad/thai-location-kit
 ```
 
 ## 🚀 ตัวอย่างการใช้งาน (Usage & Examples)
@@ -33,7 +33,7 @@ import {
   searchByZipcode, 
   searchBySubdistrict,
   searchAllFields
-} from 'thai-address-lookup';
+} from '@krizad/thai-location-kit';
 
 // ค้นหาที่อยู่ทั้งหมดในรหัสไปรษณีย์ 10400
 const zipcodeResults = searchByZipcode('10400');
@@ -57,7 +57,7 @@ import {
   getDistrictsByProvince, 
   getSubdistrictsByDistrict,
   getZipcodeByHierarchy
-} from 'thai-address-lookup';
+} from '@krizad/thai-location-kit';
 
 // สเต็ปที่ 1: ดึงรายชื่อจังหวัดทั้งหมด เพื่อนำไปสร้าง Dropdown จังหวัด
 const provinces = getUniqueProvinces(); 
@@ -86,7 +86,7 @@ const zipcode = getZipcodeByHierarchy('กรุงเทพมหานคร',
 หากต้องการให้ผู้ใช้กรอก รหัสไปรษณีย์ หรือ ตำบล แล้วฟอร์มเติมอำเภอและจังหวัดให้อัตโนมัติ:
 
 ```typescript
-import { cascadeFromZipcode, cascadeFromSubdistrict } from 'thai-address-lookup';
+import { cascadeFromZipcode, cascadeFromSubdistrict } from '@krizad/thai-location-kit';
 
 // เมื่อกรอก 10400 จะได้รายการที่อยู่เพื่อนำไปเติมอัตโนมัติ
 const addresses = cascadeFromZipcode('10400');
@@ -100,7 +100,7 @@ const addressesFromSub = cascadeFromSubdistrict('ดินแดง');
 ฟังก์ชัน `formatToDropdownOptions` ช่วยแปลงรูปแบบข้อมูลให้พร้อมใช้งานกับ Component Dropdown ทั่วไป เช่น React-Select
 
 ```typescript
-import { searchByZipcode, formatToDropdownOptions } from 'thai-address-lookup';
+import { searchByZipcode, formatToDropdownOptions } from '@krizad/thai-location-kit';
 
 const rawData = searchByZipcode('10400');
 const options = formatToDropdownOptions(rawData);

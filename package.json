@@ -1,5 +1,5 @@
 {
-  "name": "thai-address-lookup",
+  "name": "@krizad/thai-location-kit",
   "version": "1.0.0",
   "description": "Lightweight Thai address lookup engine",
   "main": "dist/src/index.js",

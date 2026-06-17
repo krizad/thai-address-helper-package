@@ -27,7 +27,8 @@ pnpm add @krizad/thai-location-kit
 
 ### 1. การค้นหาข้อมูลแบบกำหนด Level (Targeted Search)
 
-คุณสามารถค้นหาข้อมูลที่อยู่และระบุ `level` เพื่อให้คืนค่าเฉพาะข้อมูลในระดับที่ต้องการ (เช่น คืนค่าเฉพาะระดับจังหวัด หรือ อำเภอ) ระบบจะกรองข้อมูลที่ซ้ำซ้อนออกให้โดยอัตโนมัติ
+คุณสามารถค้นหาข้อมูลที่อยู่และระบุ `level` เพื่อให้คืนค่าเฉพาะข้อมูลในระดับที่ต้องการ (เช่น คืนค่าเฉพาะระดับจังหวัด หรือ อำเภอ) ระบบจะกรองข้อมูลที่ซ้ำซ้อนออกให้โดยอัตโนมัติ 
+**หมายเหตุ:** ข้อมูลที่คืนค่าจะรวมถึงข้อมูลในระดับบนที่เกี่ยวข้อง (Top-level) ของสิ่งที่ค้นเจอติดมาด้วย (เช่น ถ้าระบุ level `subDistrict` จะได้ข้อมูล `district` และ `province` ติดมาด้วยเสมอ)
 
 ```typescript
 import { searchAllFields, searchByProvince } from '@krizad/thai-location-kit';
@@ -98,19 +99,24 @@ const addressesFromSub = cascadeFromSubDistrict('ดินแดง');
 
 ### 4. การเตรียมข้อมูลสำหรับ UI Dropdown
 
-ฟังก์ชัน `formatToDropdownOptions` ช่วยแปลงรูปแบบข้อมูลให้พร้อมใช้งานกับ Component Dropdown ทั่วไป เช่น React-Select
+ฟังก์ชัน `formatToDropdownOptions` ช่วยแปลงรูปแบบข้อมูลให้พร้อมใช้งานกับ Component Dropdown ทั่วไป เช่น React-Select โดยสามารถระบุตัวคั่น `separator` ระหว่างข้อมูลได้ (ค่าเริ่มต้นคือ `" "`)
 
 ```typescript
 import { searchByZipcode, formatToDropdownOptions } from '@krizad/thai-location-kit';
 
 const rawData = searchByZipcode('10400');
-const options = formatToDropdownOptions(rawData);
 
-console.log(options);
+// ตัวอย่างการใช้ตัวคั่นด้วยช่องว่าง (Default)
+const options1 = formatToDropdownOptions(rawData);
+
+// ตัวอย่างการกำหนดตัวคั่นเอง (เช่น ' - ')
+const options2 = formatToDropdownOptions(rawData, ' - ');
+
+console.log(options2);
 /* 
 [
   {
-    label: "ต.พญาไท อ.พญาไท จ.กรุงเทพมหานคร 10400",
+    label: "ต.พญาไท - อ.พญาไท - จ.กรุงเทพมหานคร - 10400",
     value: "พญาไท|พญาไท|กรุงเทพมหานคร|10400",
     raw: { ...ข้อมูลต้นฉบับ }
   },
@@ -168,7 +174,7 @@ export interface DropdownOption {
 
 ### หมวดหมู่จัดรูปแบบ UI (UI Formatting)
 
-- `formatToDropdownOptions(addresses: ThaiAddress[]): DropdownOption[]`
+- `formatToDropdownOptions(addresses: ThaiAddress[], separator?: string): DropdownOption[]`
 
 ## 📄 License
 

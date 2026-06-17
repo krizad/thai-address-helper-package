@@ -16,8 +16,8 @@ export interface ThaiAddress {
 }
 
 export type ProvinceOnly = Pick<ThaiAddress, 'province' | 'provinceEng' | 'provinceId'>;
-export type DistrictOnly = Pick<ThaiAddress, 'district' | 'districtEng' | 'districtId'>;
-export type SubDistrictOnly = Pick<ThaiAddress, 'subDistrict' | 'subDistrictEng' | 'subDistrictId'>;
+export type DistrictOnly = Pick<ThaiAddress, 'district' | 'districtEng' | 'districtId' | 'province' | 'provinceEng' | 'provinceId'>;
+export type SubDistrictOnly = Pick<ThaiAddress, 'subDistrict' | 'subDistrictEng' | 'subDistrictId' | 'district' | 'districtEng' | 'districtId' | 'province' | 'provinceEng' | 'provinceId'>;
 
 export type SearchLevel = 'all' | 'province' | 'district' | 'subDistrict';
 
@@ -69,7 +69,10 @@ function formatSearchResult(results: ThaiAddress[], level: SearchLevel): any[] {
     const map = new Map<number, DistrictOnly>();
     results.forEach(r => {
       if (!map.has(r.districtId)) {
-        map.set(r.districtId, { district: r.district, districtEng: r.districtEng, districtId: r.districtId });
+        map.set(r.districtId, { 
+          district: r.district, districtEng: r.districtEng, districtId: r.districtId,
+          province: r.province, provinceEng: r.provinceEng, provinceId: r.provinceId
+        });
       }
     });
     return Array.from(map.values());
@@ -79,7 +82,11 @@ function formatSearchResult(results: ThaiAddress[], level: SearchLevel): any[] {
     const map = new Map<number, SubDistrictOnly>();
     results.forEach(r => {
       if (!map.has(r.subDistrictId)) {
-        map.set(r.subDistrictId, { subDistrict: r.subDistrict, subDistrictEng: r.subDistrictEng, subDistrictId: r.subDistrictId });
+        map.set(r.subDistrictId, { 
+          subDistrict: r.subDistrict, subDistrictEng: r.subDistrictEng, subDistrictId: r.subDistrictId,
+          district: r.district, districtEng: r.districtEng, districtId: r.districtId,
+          province: r.province, provinceEng: r.provinceEng, provinceId: r.provinceId
+        });
       }
     });
     return Array.from(map.values());
@@ -257,9 +264,9 @@ export function cascadeFromSubDistrict(subDistrict: string): ThaiAddress[] {
  * ====================================================
  */
 
-export function formatToDropdownOptions(addresses: ThaiAddress[]): DropdownOption[] {
+export function formatToDropdownOptions(addresses: ThaiAddress[], separator: string = " "): DropdownOption[] {
   return addresses.map((item) => ({
-    label: `ต.${item.subDistrict} อ.${item.district} จ.${item.province} ${item.zipcode}`,
+    label: `ต.${item.subDistrict}${separator}อ.${item.district}${separator}จ.${item.province}${separator}${item.zipcode}`,
     value: `${item.subDistrict}|${item.district}|${item.province}|${item.zipcode}`,
     raw: item
   }));

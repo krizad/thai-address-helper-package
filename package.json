@@ -68,7 +68,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "vitest related --run",
-      "tsc --noEmit"
+      "bash -c 'tsc --noEmit'"
     ]
   },
   "devDependencies": {

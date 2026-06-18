@@ -2,7 +2,7 @@
 
 แพ็กเกจสำหรับค้นหาและจัดการข้อมูลที่อยู่ประเทศไทย (ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์) ที่มีขนาดเล็ก รวดเร็ว และใช้งานง่าย รองรับทั้ง Node.js และ Browser เขียนด้วย TypeScript
 
-✨ **[ดูตัวอย่างการใช้งาน (Live Demo)](https://krizad.github.io/thai-address-demo/)**
+✨ **[ดูตัวอย่างการใช้งาน (Live Demo)](https://krizad.github.io/thai-address-helper-demo/)**
 
 ## 🌟 จุดเด่น (Features)
 

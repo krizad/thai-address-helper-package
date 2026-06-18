@@ -1,6 +1,6 @@
 {
   "name": "@krizad/thai-address-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight Thai address lookup engine — search by sub-district, district, province, or zipcode with cascading dropdown support. Works in Node.js and the browser.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

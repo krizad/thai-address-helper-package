@@ -8,3 +8,4 @@ vitest.config.*
 coverage/
 .DS_Store
 *.tsbuildinfo
+*.map

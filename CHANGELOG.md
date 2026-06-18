@@ -9,25 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Dual ESM/CJS package output via tsup
-- Comprehensive Vitest test suite (48 tests)
-- JSDoc `@param` descriptions on all exported functions
-- Typed JSON data interfaces (`ProvinceRaw`, `DistrictRaw`, `SubDistrictRaw`)
-- Proper `SearchLevel` return types (removed `any[]`)
-- `sideEffects: false` in package.json for tree-shaking
-- `engines` field requiring Node.js >= 18
-- `.npmignore` to exclude source/tests/scripts from npm package
-- `.editorconfig` forconsistent coding style
-- Husky + lint-staged pre-commit hooks
-- `typecheck` and `test:coverage` scripts
-
-### Changed
-
-- Build system: switched from raw `tsc` to `tsup` for dual ESM/CJS output
-- `package.json` `exports` map now provides proper conditional exports for `import`/`require`
-- `files` field now only includes `dist/` (data is bundled by tsup)
-- `main` field updated to `./dist/index.js`, added `module` for ESM
-
-## [1.0.5] - Previous release
-
-- Initial lightweight Thai address lookup engine
+- Initial release of `@krizad/thai-address-helper`
+- In-memory Thai address lookup engine (no API required)
+- `searchAllFields()` — search across sub-district, district, province, and zipcode
+- `searchBySubDistrict()`, `searchByDistrict()`, `searchByProvince()`, `searchByZipcode()` — field-specific search
+- `SearchLevel` parameter on all search functions to return targeted data (`province`, `district`, `subDistrict`, `all`)
+- English language search support (`subDistrictEng`, `districtEng`, `provinceEng`)
+- Cascading dropdown support:
+  - `getDropdownList()` — unified function for province/district/subDistrict dropdowns
+  - `getUniqueProvinces()`, `getDistrictsByProvince()`, `getSubDistrictsByDistrict()`
+  - `getZipcodeByHierarchy()` — auto-fill zipcode from selected hierarchy
+  - `getUniqueZipcodes()`
+  - `cascadeFromZipcode()`, `cascadeFromSubDistrict()` — reverse cascade for auto-complete forms
+- `formatToDropdownOptions()` — format addresses for UI dropdown components (e.g., React-Select)
+- Full TypeScript support with `ThaiAddress`, `SearchLevel`, and `DropdownOption` types
+- Dual CJS/ESM export via `tsup`
+- Zero runtime dependencies
+- Node.js >= 18 support
